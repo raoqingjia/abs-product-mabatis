@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bboss.product.dao.interfaces.SkuCharacterDao">
+    <sql id="pcSkuCharacter">
+     FROM  ABS_PRODUCT.PC_SKU_CHARACTER
+    </sql>
+	<select id="findCharacter" resultType="map">
+		SELECT * <include refid="pcSkuCharacter"></include>
+	</select>
+	<select id="findCharacterByCharNum" resultType="map"
+		parameterType="string">
+		SELECT * <include refid="pcSkuCharacter"></include> WHERE CHAR_NUM = #{charNum}
+	</select>
+	<resultMap type="testResultMapEntity" id="doResultMap">
+		<result property="doCharName" column="CHAR_NAME" />
+		<result property="doCharNum" column="CHAR_NUM" />
+		<result property="doCharType" column="CHAR_TYPE" />
+		<result property="doCharDisplay" column="CHAR_DISPLAY" />
+		<result property="doReadonly" column="READONLY" />
+	</resultMap>
+	<select id="findCharacterByCharName" resultMap="doResultMap"
+		parameterType="string">
+		SELECT *  <include refid="pcSkuCharacter"></include> WHERE CHAR_NAME = #{charName}
+	</select>
+	<insert id="insertCharacter" parameterType="characterEntity">
+		INSERT INTO PC_SKU_CHARACTER (ID,SKU_NUM,CHAR_NAME,CHAR_NUM,CHAR_TYPE,TO_BOSS_FLAG) VALUES (#{id},#{skuNum},#{charName},#{charNum},#{charType},#{toBossFlag})
+	</insert>
+	<update id="updateCharNameByCharNum" parameterType="string">
+	  update ABS_PRODUCT.PC_SKU_CHARACTER  set CHAR_NAME = #{charName}  where CHAR_NUM = #{charNum}
+	</update>
+	<delete id="deleteCharNumByCharNum" parameterType="string">
+	   delete  <include refid="pcSkuCharacter"></include>  WHERE CHAR_NUM = #{charNum}
+	</delete>
+</mapper>
+
+
